@@ -6,9 +6,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $loc = htmlspecialchars($_POST['location'], ENT_QUOTES);
         $date = date('Y/m/d H:i:s');
+        $orig = file_get_contents("michael.txt");
+        $spl = explode("<br>", $orig, 5);
+        $out = "";
+        foreach($spl as $s){
+            if(str_contains($s, "<br>")){
+                break;
+            }
+            $out .= "<br>" . $s;
+        }
         $file = fopen("michael.txt", "w");
         $txt = "\"". $loc . "\" at " . $date; 
-        fwrite($file, $txt);
+        fwrite($file, $txt . $out);
         fclose($file);
     }
 }
