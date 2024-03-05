@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('EST');
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(!isset($_POST['location'])) {
         $error = "No location specified";
