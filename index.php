@@ -22,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         fwrite($file, $txt . $out);
         fclose($file);
         $file = fopen("history.txt", "a");
-        fwrite($file, $txt);
+        fwrite($file, '\n' . $txt);
         fclose($file);
     }
 }
