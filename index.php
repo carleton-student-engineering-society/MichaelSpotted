@@ -68,7 +68,7 @@ if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
 }
 
-function click(){
+function buttonclick(){
     document.getElementById('form').submit();
 
 }
@@ -82,7 +82,7 @@ function click(){
     ?>
     <form method="POST" id="form">
         <input type="text" name="location">
-        <button type="button" onclick="click();">Submit</button>
+        <button type="button" onclick="buttonclick()">Submit</button>
     </form>
     <h2>
     <?php
