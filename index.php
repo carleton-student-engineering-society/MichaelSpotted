@@ -21,6 +21,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $txt = "\"". $loc . "\" at " . $date; 
         fwrite($file, $txt . $out);
         fclose($file);
+        $file = fopen("history.txt", "a");
+        fwrite($file, $txt);
+        fclose($file);
     }
 }
 
