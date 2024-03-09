@@ -63,15 +63,26 @@ h2 {
     <h1>Have you seen this man???</h1>
 </div>
 
+<script>
+if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+}
+
+function click(){
+    document.getElementById('form').submit();
+
+}
+</script>
+
 <div class="bottom">
     <?php
         if(isset($error)) {
             echo "<p style=\"text-color: red;\">" . $error . "</p>";
         }
     ?>
-    <form method="POST">
+    <form method="POST" id="form">
         <input type="text" name="location">
-        <input type="submit" value="Submit">
+        <button type="button" onclick="click();">Submit</button>
     </form>
     <h2>
     <?php
