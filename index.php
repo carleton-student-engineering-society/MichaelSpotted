@@ -1,6 +1,6 @@
 <?php
 
-date_default_timezone_set('EST');
+date_default_timezone_set('EDT');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(!isset($_POST['location'])) {
