@@ -1,6 +1,6 @@
 <?php
 
-date_default_timezone_set('EST');
+date_default_timezone_set('America/Toronto');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(!isset($_POST['location'])) {
@@ -21,17 +21,32 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $txt = "\"". $loc . "\" at " . $date; 
         fwrite($file, $txt . $out);
         fclose($file);
+        $file = fopen("history.txt", "a");
+        fwrite($file, '\n' . $txt);
+        fclose($file);
     }
 }
 
 ?>
 
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>MichaelSpotted.ca</title>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7Y0hb0SgnwzC6wSdjlYN4uLSAvPsRets&loading=async&callback=initMap">
+</script>
 <style>
 body {
+    position: absolute;
+    top: 0;
+    left: 0;
     background-image: url('Michael.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100% 100%;
+    width: 99%;
+    height: 99%;
 }
 h1 {
     color: white;
@@ -40,6 +55,9 @@ h1 {
 h2 {
     color: white;
     font-size: 30px;
+}
+p {
+    color: white;
 }
 .middle {
     top: 10%;
@@ -54,26 +72,70 @@ h2 {
     width: 100%;
     text-align: center;
 }
+#map {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+    height: 400px;
+    width: 100%;
+}
 </style>
-
+</head>
+<body>
+<br>
 <div class="middle">
-    <h1>Have you seen this man???</h1>
+<h1>Michael Has Been Spotted!</h1>
+<div>
+<p>Map Refreshed At:</p>
+<p id="timestamp" /></div>
+<form method="POST" id="form">
+    <input type="text" name="location">
+    <button type="button" onclick="buttonclick()">Submit</button>
+</form>
+<h2>
+<?php
+    include "michael.txt";
+?>
+</h2>
 </div>
+<div id="map"/>
 
-<div class="bottom">
-    <?php
-        if(isset($error)) {
-            echo "<p style=\"text-color: red;\">" . $error . "</p>";
-        }
-    ?>
-    <form method="POST">
-        <input type="text" name="location">
-        <input type="submit" value="Submit">
-    </form>
-    <h2>
-    <?php
-        include "michael.txt";
-    ?>
-    </h2>
-</div>
+<script>
+if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+}
 
+function buttonclick(){
+    document.getElementById('form').submit();
+
+}
+let map;
+
+async function initMap() {
+  const { Map } = await google.maps.importLibrary("maps");
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    let values = this.responseText.split(",");
+    let lat = Number(values[0]);
+    let lon = Number(values[1]);
+    let timestamp = values[2];
+    map = new Map(document.getElementById("map"), {
+      center: { lat: lat, lng: lon },
+      zoom: 15,
+      mapId: "MICHAEL_MAP",
+    });
+    const marker = new AdvancedMarkerElement({
+      map: map,
+      position: { lat: lat, lng: lon },
+      title: "Michael",
+    });
+    var date = new Date(timestamp * 1000);
+    document.getElementById("timestamp").innerHTML = date.toString();
+  }
+  xhttp.open("GET", "info.txt", true);
+  xhttp.send();
+}
+</script>
+</body>
+</html>
