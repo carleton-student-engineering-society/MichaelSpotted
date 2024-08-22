@@ -109,6 +109,13 @@ function buttonclick(){
     document.getElementById('form').submit();
 
 }
+</script>
+
+<script>
+function buttonclick(){
+    document.getElementById('form').submit();
+
+}
 let map;
 
 async function initMap() {
