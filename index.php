@@ -76,7 +76,7 @@ p {
     position: absolute;
     bottom: 0;
     margin-bottom: 20px;
-    height: 400px;
+    height: 30%;
     width: 100%;
 }
 </style>
